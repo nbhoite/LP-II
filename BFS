@@ -1,0 +1,50 @@
+from collections import defaultdict, deque
+
+class Graph:
+    def __init__(self):
+        self.adj_list = defaultdict(list)
+
+    # Add edge (undirected)
+    def add_edge(self, u, v):
+        self.adj_list[u].append(v)
+        self.adj_list[v].append(u)
+
+    # Recursive BFS
+    def bfs(self, start):
+        visited = set()
+        queue = deque()
+
+        visited.add(start)
+        queue.append(start)
+
+        print("BFS:", end=" ")
+        self._bfs_helper(queue, visited)
+        print()
+
+    def _bfs_helper(self, queue, visited):
+        if not queue:
+            return
+
+        vertex = queue.popleft()
+        print(vertex, end=" ")
+
+        for neighbor in self.adj_list[vertex]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+
+        # Recursive call for the next level
+        self._bfs_helper(queue, visited)
+
+
+# Example usage
+if __name__ == "__main__":
+    graph = Graph()
+    graph.add_edge(0, 1)
+    graph.add_edge(0, 2)
+    graph.add_edge(1, 3)
+    graph.add_edge(1, 4)
+    graph.add_edge(2, 5)
+    graph.add_edge(2, 6)
+
+    graph.bfs(0)  # Recursive BFS
